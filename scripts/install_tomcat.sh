@@ -4,7 +4,6 @@
 # Package	: tomcat
 # Version	: v11.0.0-M3
 # Source repo	: https://github.com/apache/tomcat.git
-# Tested on	: ubi 8.5
 # Language      : Java
 # Travis-Check  : True
 # Script License: Apache License, Version 2 or later
@@ -26,9 +25,9 @@ PACKAGE_URL=https://github.com/apache/tomcat.git
 OS_NAME=`cat /etc/os-release | grep PRETTY_NAME | cut -d '=' -f2 | tr -d '"'`
 
 cd ${HOME}
-yum update -y
-yum install -y git wget
-yum install -y java-17-openjdk-devel.ppc64le
+apt-get update -y
+apt-get install -y git wget
+apt-get install -y java-17-openjdk-devel.ppc64le
 
 ##Set JAVA_HOME
 JAVA_HOME=$(update-alternatives --list | grep java_sdk_17_openjdk | cut -f  3)
