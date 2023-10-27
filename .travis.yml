@@ -8,8 +8,11 @@ dist: trusty
 
 language: java
 jdk:
-    - openjdk11
+    - openjdk17
    #- oraclejdk9
+branches:
+  only:
+    - master
 
 env:
   global:
@@ -27,9 +30,21 @@ before_script:
 # Sometimes things get restored from the cache with bad permissions. See https://github.com/travis-ci/travis-ci/issues/9630
   - sudo chmod -R 777 "$HOME/.m2/repository";
   - sudo chown -R travis:travis "$HOME/.m2/repository";
-
+  - curl -LSsO https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v1.17.0/opentelemetry-javaagent.jar 
+  - mvn -ntp dependency:go-offline 
+  - mvn clean install -DskipTests -Djdk.lang.Process.launchMechanism=vfork
+  - bash scripts/install_tomcat.sh
+  - mkdir -p /usr/local/hapi/data/hapi/lucenefiles
+  - chmod 775 /usr/local/hapi/data/hapi/lucenefiles
+  - cp catalina.properties  /usr/local/tomcat/conf/catalina.properties 
+  - cp server.xml /usr/local/tomcat/conf/server.xml
+  
 script:
-  - mvn -B install
+  - git checkout v6.6.0
+  - mvn package spring-boot:repackage -Pboot
+  - cp target/ROOT.war /usr/local/tomcat/webapps/ROOT.war
+  - java --class-path "target/ROOT.war" "-Dloader.path=main.war!/WEB-INF/classes/,main.war!/WEB-INF/,/app/extra-classes" "org.springframework.boot.loader.PropertiesLauncher", "target/main.war"
+
 
 
 
