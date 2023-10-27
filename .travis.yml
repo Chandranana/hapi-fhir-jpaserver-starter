@@ -10,6 +10,9 @@ language: java
 jdk:
     - openjdk17
    #- oraclejdk9
+arch:  
+  - ppc64le
+  
 branches:
   only:
     - master
