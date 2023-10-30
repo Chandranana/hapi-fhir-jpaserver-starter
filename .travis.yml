@@ -16,6 +16,7 @@ arch:
 branches:
   only:
     - master
+    - v6.6.0
 
 env:
   global:
@@ -40,7 +41,7 @@ before_script:
   - cp server.xml /home/travis/tomcat/conf/server.xml
   
 script:
-  - git checkout v6.6.0
+  #- git checkout v6.6.0
   - mvn -ntp dependency:go-offline 
   - mvn clean install -DskipTests -Djdk.lang.Process.launchMechanism=vfork
   - mvn package spring-boot:repackage -Pboot
