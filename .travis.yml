@@ -34,15 +34,14 @@ before_script:
   - sudo chown -R travis:travis "$HOME/.m2/repository";
   - curl -LSsO https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v1.17.0/opentelemetry-javaagent.jar 
   - chmod +x scripts/install_tomcat.sh
-  - bash scripts/install_tomcat.sh
-  - cp catalina.properties  /home/travis/tomcat/conf/catalina.properties 
-  - cp server.xml /home/travis/tomcat/conf/server.xml
+  #- bash scripts/install_tomcat.sh
+  #- cp catalina.properties  /home/travis/tomcat/conf/catalina.properties 
+  #- cp server.xml /home/travis/tomcat/conf/server.xml
   
 script:
-  - cd github_username/repository_name
-  - git checkout v6.6.0
   - echo $TRAVIS_BUILD_DIR
-  - cd $TRAVIS_BUILD_DIR/
+  - cd $TRAVIS_BUILD_DIR
+  - git checkout v6.6.0
   - mvn -ntp dependency:go-offline 
   - mvn clean install -DskipTests -Djdk.lang.Process.launchMechanism=vfork
   - mvn package spring-boot:repackage -Pboot
