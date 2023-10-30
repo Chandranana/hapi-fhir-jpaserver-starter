@@ -16,8 +16,6 @@ arch:
 branches:
   only:
     - master
-    - v6.6.0
-
 env:
   global:
     - MAVEN_OPTS="-Xmx10244M -Xss128M -XX:MetaspaceSize=512M -XX:MaxMetaspaceSize=1024M -XX:+CMSClassUnloadingEnabled -XX:+UseConcMarkSweepGC"
@@ -41,7 +39,10 @@ before_script:
   - cp server.xml /home/travis/tomcat/conf/server.xml
   
 script:
-  #- git checkout v6.6.0
+  - cd github_username/repository_name
+  - git checkout v6.6.0
+  - echo $TRAVIS_BUILD_DIR
+  - cd $TRAVIS_BUILD_DIR/
   - mvn -ntp dependency:go-offline 
   - mvn clean install -DskipTests -Djdk.lang.Process.launchMechanism=vfork
   - mvn package spring-boot:repackage -Pboot
