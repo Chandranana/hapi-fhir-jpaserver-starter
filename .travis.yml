@@ -41,7 +41,6 @@ before_script:
 script:
   - echo $TRAVIS_BUILD_DIR
   - cd $TRAVIS_BUILD_DIR
-  - git checkout v6.6.0
   - mvn -ntp dependency:go-offline 
   - mvn clean install -DskipTests -Djdk.lang.Process.launchMechanism=vfork
   - mvn package spring-boot:repackage -Pboot
